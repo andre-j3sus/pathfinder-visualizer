@@ -8,6 +8,7 @@ fun main() {
 
     val grid = JPanel()
     grid.background = Color.BLACK
-    grid.setBounds(10, 10, 740, 740)
+    grid.setBounds(GRID_X, GRID_Y, GRID_SIDE, GRID_SIDE)
+    grid.layout = null
     frame.add(grid)
 }
