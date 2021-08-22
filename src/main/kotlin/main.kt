@@ -1,14 +1,19 @@
-import java.awt.*
-import javax.swing.*
+const val DIAGONAL = false
 
 
+/**
+ * Main function of the Path Finder Visualizer.
+ */
 fun main() {
-    val frame = JFrame()
-    frame.initFrame()
+    Frame.init()
+    Grid.init()
 
-    val grid = JPanel()
-    grid.background = Color.BLACK
-    grid.setBounds(GRID_X, GRID_Y, GRID_SIDE, GRID_SIDE)
-    grid.layout = null
-    frame.add(grid)
+    Grid.setStart(Position(10, 10))
+    Grid.setEnd(Position(15, 20))
+
+
+    while (true) {
+        Frame.updateGrid()
+    }
+
 }

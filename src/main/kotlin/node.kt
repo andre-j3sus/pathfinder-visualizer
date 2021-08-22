@@ -1,29 +1,28 @@
-data class Position(val row: Int, val col: Int)
+import java.awt.Color
+
+
+data class Position(val x: Int, val y: Int)
 
 enum class State { OPEN, CLOSE, IN_QUEUE }
 
-data class Node(val pos: Position, var state: State, var parent: Node? = null)
+enum class Type { START, END, WALL, NEUTRAL, PATH }
+
+data class Node(val pos: Position, var state: State, var type: Type = Type.NEUTRAL, var parent: Node? = null)
 
 
-fun Node.getNeighbours(grid: Array<Array<Node>>): Array<Node?> {
-    return arrayOf(
-        getNodeAt(grid, Position(pos.row - 1, pos.col)),
-        getNodeAt(grid, Position(pos.row + 1, pos.col)),
-        getNodeAt(grid, Position(pos.row, pos.col - 1)),
-        getNodeAt(grid, Position(pos.row, pos.col + 1)),
-    )
+/**
+ * Returns the color of the node.
+ */
+fun Node.getColor(): Color {
+    return when (type) {
+        Type.NEUTRAL -> when (state) {
+            State.OPEN -> Color.WHITE
+            State.IN_QUEUE -> Color.GREEN
+            State.CLOSE -> Color.BLUE
+        }
+        Type.START -> Color.YELLOW
+        Type.END -> Color.MAGENTA
+        Type.WALL -> Color.DARK_GRAY
+        Type.PATH -> Color.RED
+    }
 }
-
-
-fun Position.inGrid(grid: Array<Array<Node>>): Boolean {
-    return grid.isNotEmpty() && row in 0..grid.lastIndex && col in 0..grid[0].lastIndex
-}
-
-
-fun getNodeAt(grid: Array<Array<Node>>, pos: Position): Node? {
-    if (!pos.inGrid(grid)) return null
-    return grid[pos.row][pos.col]
-}
-
-
-
