@@ -11,10 +11,11 @@ import javax.swing.JPanel
 object GridPanel : JPanel() {
 
     private lateinit var g2D: Graphics2D
-    private const val GRID_SIDE = 800
+    const val GRID_SIDE = 801
     private const val GRID_GAP = 1
     private const val FONT_SIZE = 24
     private const val NODE_SIZE = GRID_SIDE / Grid.ROWS
+
 
 
     override fun paintComponent(g: Graphics) {

@@ -1,10 +1,11 @@
 import java.util.*
+import kotlinx.coroutines.*
 
 
 /**
  * Types of search algorithms.
  */
-enum class ALGORITHM { BFS, DIJKSTRA, A_ASTERISK }
+enum class Algorithm(val str: String) { BFS("Breadth-First Search"), DIJKSTRA("Dijkstra"), A_STAR("A*") }
 
 
 /**
@@ -19,10 +20,12 @@ fun findPath() {
         return
     }
 
-    when (Frame.getSelectedAlgo()) {
-        ALGORITHM.BFS -> bfs()
-        ALGORITHM.DIJKSTRA -> dijkstra()
-        ALGORITHM.A_ASTERISK -> aAsterisk()
+    GlobalScope.launch {
+        when (Frame.getSelectedAlgo()) {
+            Algorithm.BFS -> bfs()
+            Algorithm.DIJKSTRA -> dijkstra()
+            Algorithm.A_STAR -> aAsterisk()
+        }
     }
 }
 
@@ -31,7 +34,7 @@ fun findPath() {
  * Breadth-First Search Algorithm.
  * @return the shortest path between start and end nodes, or null.
  */
-fun bfs(): MutableList<Node>? {
+suspend fun bfs(): MutableList<Node>? {
     Grid.resetNodes()
 
     val queue: Queue<Node> = LinkedList()
@@ -40,19 +43,25 @@ fun bfs(): MutableList<Node>? {
     Grid.start!!.state = State.IN_QUEUE
 
     while (queue.isNotEmpty()) {
-        val current = queue.poll()
-        //println(current)
-        current.state = State.CLOSE
+        for (i in 0 until queue.size) {
+            val current = queue.poll()
+            println(current)
+            current.state = State.CLOSE
 
-        if (current == Grid.end!!) break
+            if (current == Grid.end!!) {
+                queue.clear()
+                break
+            }
 
-        Grid.getNodeNeighbours(current).forEach { node ->
-            if (node.state == State.OPEN) {
-                node.parent = current
-                queue.add(node)
-                node.state = State.IN_QUEUE
+            Grid.getNodeNeighbours(current).forEach { node ->
+                if (node.state == State.OPEN) {
+                    node.parent = current
+                    queue.add(node)
+                    node.state = State.IN_QUEUE
+                }
             }
         }
+        delay(50)
         GridPanel.repaint()
     }
 
@@ -73,7 +82,7 @@ fun aAsterisk(): MutableList<Node>? {
  * Dijkstra Algorithm.
  * @return the shortest path between start and end nodes, or null.
  */
-fun dijkstra(): MutableList<Node>? {
+suspend fun dijkstra(): MutableList<Node>? {
 
     for (i in 0 until Grid.size) {
         for (j in 0 until Grid.size) {
@@ -107,6 +116,7 @@ fun dijkstra(): MutableList<Node>? {
                 }
             }
         }
+        delay(50)
         GridPanel.repaint()
     }
 

@@ -2,7 +2,7 @@
  * Grid with the nodes.
  */
 object Grid {
-    const val ROWS = 30
+    const val ROWS = 40
 
     var grid = Array(ROWS) { Array(ROWS) { Node(Position(-1, -1), State.OPEN) } }
     var size = ROWS
@@ -46,6 +46,7 @@ object Grid {
     fun resetNodes() {
         for (i in 0 until size) {
             for (j in 0 until size) {
+                if (grid[i][j].type == Type.PATH) grid[i][j].type = Type.NEUTRAL
                 grid[i][j].state = State.OPEN
                 grid[i][j].parent = null
                 grid[i][j].g = 0f
