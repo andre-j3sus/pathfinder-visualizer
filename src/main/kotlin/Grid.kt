@@ -2,6 +2,8 @@
  * Grid with the nodes.
  */
 object Grid {
+
+    // Constants
     const val ROWS = 40
 
     var grid = Array(ROWS) { Array(ROWS) { Node(Position(-1, -1), State.OPEN) } }
@@ -12,19 +14,21 @@ object Grid {
 
     /**
      * Sets the start node.
+     * @param pos position of the new start node
      */
     fun setStart(pos: Position) {
         start = getNodeAt(pos)
-        start!!.type = Type.START
+        start!!.type = NodeType.START
     }
 
 
     /**
      * Sets the end node.
+     * @param pos position of the new end node
      */
     fun setEnd(pos: Position) {
         end = getNodeAt(pos)
-        end!!.type = Type.END
+        end!!.type = NodeType.END
     }
 
 
@@ -34,25 +38,27 @@ object Grid {
     fun init() {
         for (i in 0 until size) {
             for (j in 0 until size) {
-                grid[i][j] =
-                    grid[i][j].copy(pos = Position(j, i), state = State.OPEN, type = Type.NEUTRAL, parent = null)
+                grid[i][j] = Node(Position(j, i), State.OPEN, NodeType.NEUTRAL, parent = null, 0f, 0f)
             }
         }
     }
 
+
     /**
-     * Resets the nodes.
+     * Resets the nodes preparing them for new research. Does not affect start and end nodes.
      */
     fun resetNodes() {
         for (i in 0 until size) {
             for (j in 0 until size) {
-                if (grid[i][j].type == Type.PATH) grid[i][j].type = Type.NEUTRAL
                 grid[i][j].state = State.OPEN
                 grid[i][j].parent = null
                 grid[i][j].g = 0f
                 grid[i][j].h = 0f
+                if (grid[i][j].type == NodeType.PATH) grid[i][j].type = NodeType.NEUTRAL
             }
         }
+
+        GridPanel.repaint()
     }
 
 
@@ -63,7 +69,7 @@ object Grid {
         for (i in 0 until size) {
             for (j in 0 until size) {
                 grid[i][j].state = State.OPEN
-                grid[i][j].type = Type.NEUTRAL
+                grid[i][j].type = NodeType.NEUTRAL
             }
         }
         start = null
@@ -75,6 +81,7 @@ object Grid {
 
     /**
      * Returns the node at the position [pos].
+     * @return node
      */
     fun getNodeAt(pos: Position): Node? {
         if (!isValidPos(pos)) return null
@@ -83,7 +90,8 @@ object Grid {
 
 
     /**
-     * Returns true if the position [pos] is valid.
+     * Checks if the position [pos] is valid.
+     * @return true if the position [pos] is valid.
      */
     private fun isValidPos(pos: Position): Boolean {
         return grid.isNotEmpty() && pos.y in 0..grid.lastIndex && pos.x in 0..grid[0].lastIndex
@@ -94,16 +102,20 @@ object Grid {
      * Returns a list with the [node] neighbours.
      */
     fun getNodeNeighbours(node: Node): List<Node> {
-        return listOfNotNull(
-            getNodeAt(Position(node.pos.x - 1, node.pos.y)),
-            getNodeAt(Position(node.pos.x + 1, node.pos.y)),
-            getNodeAt(Position(node.pos.x, node.pos.y - 1)),
-            getNodeAt(Position(node.pos.x, node.pos.y + 1)),
-        )
+        val neighbours = mutableListOf<Node>()
 
-        /*getNodeAt(Position(node.pos.x - 1, node.pos.y - 1)),
-        getNodeAt(Position(node.pos.x + 1, node.pos.y - 1)),
-        getNodeAt(Position(node.pos.x - 1, node.pos.y - 1)),
-        getNodeAt(Position(node.pos.x + 1, node.pos.y + 1)),*/
+        for (i in -1..1) {
+            for (j in -1..1) {
+                if (i == 0 && j == 0) continue
+                if (!PathFinding.DIAGONAL_SEARCH &&
+                    (i == -1 && j != 0 || i == 1 && j != 0 || i != 0 && j == -1 || i != 0 && j == 1)
+                ) continue
+
+                val neighbourPos = Position(node.pos.x + i, node.pos.y + j)
+                val neighbour = getNodeAt(neighbourPos) ?: continue
+                neighbours.add(neighbour)
+            }
+        }
+        return neighbours
     }
 }

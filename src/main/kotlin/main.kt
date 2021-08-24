@@ -1,8 +1,8 @@
-//const val DIAGONAL = false
 
 
 /**
  * Main function of the Path Finder Visualizer.
+ * @author André Jesus.
  */
 fun main() {
     Grid.init()

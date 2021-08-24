@@ -15,7 +15,7 @@ object EventHandler : MouseAdapter() {
         val nodeClicked = Grid.getNodeAt(Position(x, y)) ?: return
         println(nodeClicked)
 
-        //nodeClicked.type = Frame.getSelectedNodeType()
+        nodeClicked.type = Frame.getSelectedNodeType()
     }
 
 }
