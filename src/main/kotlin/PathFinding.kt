@@ -6,7 +6,7 @@ object PathFinding {
 
     // Constants
     const val DIAGONAL_SEARCH = false
-    private const val ANIMATION_DELAY = 50L
+    private const val ANIMATION_DELAY = 30L
     val algorithmsNames = arrayOf("Breadth-First Search", "Dijkstra", "A*")
 
 
@@ -82,9 +82,50 @@ object PathFinding {
     /**
      * A* algorithm.
      */
-    private fun aAsterisk(): MutableList<Node>? {
-        //TODO(To be implemented)
-        return null
+    private suspend fun aAsterisk(): MutableList<Node>? {
+        val pq = PriorityQueue(aStarNodeComparator())
+
+        for (i in 0 until Grid.size) {
+            for (j in 0 until Grid.size) {
+                val node = Grid.getNodeAt(Position(j, i))!!
+                node.g = Float.MAX_VALUE
+                node.parent = null
+            }
+        }
+
+        Grid.start!!.g = 0f
+        Grid.start!!.h = 0f
+        pq.add(Grid.start)
+
+        while (pq.isNotEmpty()) {
+            for (i in 0 until pq.size) {
+                val current = pq.poll()
+                //println(current)
+                current.state = State.CLOSE
+
+                if (current == Grid.end) {
+                    pq.clear()
+                    break
+                }
+
+                Grid.getNodeNeighbours(current).forEach { neighbour ->
+                    if (neighbour.state == State.OPEN) {
+                        val newG = current.calculateNewCost(neighbour)
+                        if (newG < neighbour.g) {
+                            neighbour.g = newG
+                            neighbour.h = neighbour.calculateH()
+                            neighbour.parent = current
+                            pq.add(neighbour)
+                        }
+                    }
+                }
+            }
+
+            delay(ANIMATION_DELAY)
+            GridPanel.repaint()
+        }
+
+        return getPath()
     }
 
 
@@ -93,18 +134,16 @@ object PathFinding {
      * @return the shortest path between start and end nodes, or null.
      */
     private suspend fun dijkstra(): MutableList<Node>? {
+
+        val pq = PriorityQueue(dijkstraNodeComparator())
+
         for (i in 0 until Grid.size) {
             for (j in 0 until Grid.size) {
                 val node = Grid.getNodeAt(Position(j, i))!!
-                node.g = Float.MAX_VALUE
+                node.g = if (node == Grid.start!!) 0f else Float.MAX_VALUE
                 node.parent = null
+                pq.add(node)
             }
-        }
-        Grid.start!!.g = 0f
-
-        val pq = PriorityQueue(nodeComparator())
-        for (i in 0 until Grid.size) {
-            pq.addAll(Grid.grid[i])
         }
 
         while (pq.isNotEmpty()) {
@@ -116,7 +155,7 @@ object PathFinding {
 
             Grid.getNodeNeighbours(current).forEach { neighbour ->
                 if (neighbour.state == State.OPEN) {
-                    val newG = current.g + getDistance(current, neighbour)
+                    val newG = current.calculateNewCost(neighbour)
                     if (newG < neighbour.g) {
                         neighbour.g = newG
                         neighbour.parent = current
