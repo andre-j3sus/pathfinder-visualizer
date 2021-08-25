@@ -20,7 +20,7 @@ object Frame : JFrame() {
     private val nodeSelectionP = JPanel()
 
     // Main Commands Panel
-    private val menuTitle = JLabel("Menu")
+    private val menuTitle = JLabel("Controls")
     private val algorithmsBox = JComboBox(PathFinding.algorithmsNames)
     private val findPathBtn = JButton("Find Path")
     private val clearBtn = JButton("Clear")

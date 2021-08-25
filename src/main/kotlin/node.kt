@@ -35,9 +35,36 @@ data class Node(
     var state: State,
     var type: NodeType = NodeType.NEUTRAL,
     var parent: Node? = null,
-    var g: Float = 0f,
-    var h: Float = 0f
+    var g: Float = 0f, // Cost
+    var h: Float = 0f  // Heuristic
 )
+
+
+/**
+ * Calculates the F from A* algorithm.
+ * @return f
+ */
+fun Node.getF(): Float{
+    return g + h
+}
+
+
+/**
+ * Calculates the H from A* algorithm.
+ * @return h
+ */
+fun Node.calculateH(): Float{
+    return getDistance(this, Grid.end!!)
+}
+
+
+/**
+ * Calculates G from A* algorithm.
+ * @return g
+ */
+fun Node.calculateNewCost(node2: Node): Float{
+    return g + getDistance(this, node2)
+}
 
 
 /**
@@ -59,11 +86,20 @@ fun Node.getColor(): Color {
 
 
 /**
- * Node Comparator.
+ * Node Comparator for dijkstra algorithm comparing costs.
  */
-fun nodeComparator() =
+fun dijkstraNodeComparator() =
     Comparator<Node> { n1, n2 ->
         n1.g.compareTo(n2.g)
+    }
+
+
+/**
+ * Node Comparator for A* algorithm.
+ */
+fun aStarNodeComparator() =
+    Comparator<Node> { n1, n2 ->
+        (n1.getF()).compareTo((n2.getF()))
     }
 
 
