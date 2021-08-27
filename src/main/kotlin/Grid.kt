@@ -63,6 +63,18 @@ object Grid {
 
 
     /**
+     * Makes every node a wall.
+     */
+    fun makeAllWall(){
+        for (i in grid.indices) {
+            for (j in 0 until grid[0].size) {
+                grid[i][j] = grid[i][j].copy(type = NodeType.WALL)
+            }
+        }
+    }
+
+
+    /**
      * Clears the grid.
      */
     fun clear() {

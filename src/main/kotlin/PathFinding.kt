@@ -7,13 +7,13 @@ object PathFinding {
     // Constants
     const val DIAGONAL_SEARCH = false
     private const val ANIMATION_DELAY = 30L
-    val algorithmsNames = arrayOf("Breadth-First Search", "Dijkstra", "A*")
+    val searchAlgorithmsNames = arrayOf("Breadth-First Search", "Dijkstra", "A*")
 
 
     /**
      * Types of search algorithms.
      */
-    enum class Algorithm { BFS, DIJKSTRA, A_STAR }
+    enum class SearchAlgorithm { BFS, DIJKSTRA, A_STAR }
 
 
     /**
@@ -30,10 +30,10 @@ object PathFinding {
         }
 
         GlobalScope.launch {
-            when (Frame.getSelectedAlgo()) {
-                Algorithm.BFS -> bfs()
-                Algorithm.DIJKSTRA -> dijkstra()
-                Algorithm.A_STAR -> aAsterisk()
+            when (Frame.getSelectedSearchAlgo()) {
+                SearchAlgorithm.BFS -> bfs()
+                SearchAlgorithm.DIJKSTRA -> dijkstra()
+                SearchAlgorithm.A_STAR -> aAsterisk()
             }
         }
     }

@@ -21,7 +21,9 @@ object Frame : JFrame() {
 
     // Main Commands Panel
     private val menuTitle = JLabel("Controls")
-    private val algorithmsBox = JComboBox(PathFinding.algorithmsNames)
+    private val algorithmsBox = JComboBox(PathFinding.searchAlgorithmsNames)
+    private val mazeGeneratorBox = JComboBox(Maze.mazeAlgorithmsNames)
+    private val generateMazeBtn = JButton("Generate Maze")
     private val findPathBtn = JButton("Find Path")
     private val clearBtn = JButton("Clear")
     private val resetBtn = JButton("Reset")
@@ -59,8 +61,13 @@ object Frame : JFrame() {
         clearBtn.addActionListener { Grid.clear() }
         mainCommandsP.add(resetBtn)
         resetBtn.addActionListener { Grid.resetNodes() }
+        mainCommandsP.add(mazeGeneratorBox)
+        mainCommandsP.add(generateMazeBtn)
+        generateMazeBtn.addActionListener { Maze.generateMaze() }
+        //generateMazeBtn.addActionListener { Maze.generateMaze() }
         mainCommandsP.setSize(FRAME_WIDTH - GridPanel.GRID_SIDE, 100)
         menuP.add(mainCommandsP)
+
 
         // Node Selection Panel setup
         nodeSelectionP.border = BorderFactory.createEmptyBorder(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE)
@@ -79,14 +86,27 @@ object Frame : JFrame() {
 
 
     /**
-     * Returns the algorithm selected by the user.
+     * Returns the search algorithm selected by the user.
      * @return search algorithm selected by JComboBox.
      */
-    fun getSelectedAlgo(): PathFinding.Algorithm {
+    fun getSelectedSearchAlgo(): PathFinding.SearchAlgorithm {
         return when (algorithmsBox.selectedItem as String) {
-            "Breadth-First Search" -> PathFinding.Algorithm.BFS
-            "Dijkstra" -> PathFinding.Algorithm.DIJKSTRA
-            else -> PathFinding.Algorithm.A_STAR
+            "Breadth-First Search" -> PathFinding.SearchAlgorithm.BFS
+            "Dijkstra" -> PathFinding.SearchAlgorithm.DIJKSTRA
+            else -> PathFinding.SearchAlgorithm.A_STAR
+        }
+    }
+
+
+
+    /**
+     * Returns the maze generation algorithm selected by the user.
+     * @return maze generation algorithm selected by JComboBox.
+     */
+    fun getSelectedMazeAlgo(): Maze.MazeGenerationAlgorithm {
+        return when (mazeGeneratorBox.selectedItem as String) {
+            "Kruskal" -> Maze.MazeGenerationAlgorithm.KRUSKAL
+            else -> Maze.MazeGenerationAlgorithm.BACKTRACKING
         }
     }
 
