@@ -6,7 +6,7 @@ object Grid {
     // Constants
     const val ROWS = 40
 
-    var grid = Array(ROWS) { Array(ROWS) { Node(Position(-1, -1), State.OPEN) } }
+    var grid = Array(ROWS) { Array(ROWS) { notDefinedNode } }
     var size = ROWS
     var start: Node? = null
     var end: Node? = null
@@ -103,14 +103,17 @@ object Grid {
     }
 
 
-    fun getNodeClicked(pos: Position): Node? {
+    /**
+     * Returns the node clicked at the position [pos].
+     * @return node
+     */
+    fun getNodeClickedInPos(pos: Position): Node? {
         for (i in 0 until size) {
             for (j in 0 until size) {
                 val node = grid[i][j]
                 val truePos = node.getTruePos()
-                if (pos.x in truePos.x..(truePos.x + GridPanel.NODE_SIZE) &&
-                    pos.y in truePos.y..(truePos.y + GridPanel.NODE_SIZE))
-                {
+
+                if (pos.x in truePos.x..(truePos.x + GridPanel.NODE_SIZE) && pos.y in truePos.y..(truePos.y + GridPanel.NODE_SIZE)) {
                     return node
                 }
             }

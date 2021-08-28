@@ -29,16 +29,19 @@ val nodeTypes = arrayOf("Start", "End", "Obstacle")
  * @param type current type
  * @param parent node's parent
  * @param g cost
- * @param h
+ * @param h heuristic
  */
 data class Node(
     val pos: Position,
     var state: State,
     var type: NodeType = NodeType.NEUTRAL,
     var parent: Node? = null,
-    var g: Float = 0f, // Cost
-    var h: Float = 0f  // Heuristic
+    var g: Float = 0f,
+    var h: Float = 0f
 )
+
+
+val notDefinedNode = Node(Position(-1, -1), State.OPEN)
 
 
 /**
@@ -86,8 +89,21 @@ fun Node.getColor(): Color {
 }
 
 
+/**
+ * Returns the true position of the node in the GridPanel.
+ * @return pos
+ */
 fun Node.getTruePos(): Position{
     return Position(pos.x * GridPanel.NODE_SIZE, pos.y * GridPanel.NODE_SIZE)
+}
+
+
+/**
+ * Check if a node is open and not a wall.
+ * @return true if the node is walkable
+ */
+fun Node.isWalkable(): Boolean{
+    return state == State.OPEN && type != NodeType.WALL
 }
 
 

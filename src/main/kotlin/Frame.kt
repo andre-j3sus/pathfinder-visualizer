@@ -81,7 +81,7 @@ object Frame : JFrame() {
         mainCommandsP.add(generateMazeBtn)
         generateMazeBtn.addActionListener { Maze.generateMaze() }
 
-        mainCommandsP.setSize(FRAME_WIDTH - GridPanel.GRID_SIDE, 100)
+        mainCommandsP.setSize(FRAME_WIDTH - GridPanel.GRID_SIDE, FRAME_HEIGHT)
         menuP.add(mainCommandsP)
 
         // Node Selection Panel setup
@@ -91,8 +91,8 @@ object Frame : JFrame() {
         mainCommandsP.add(nodesTitle, BorderLayout.CENTER)
         mainCommandsP.add(nodesBox)
 
-
         frame.add(menuP)
+
 
         // Grid Panel setup
         GridPanel.setBounds(0, 0, GridPanel.GRID_SIDE, GridPanel.GRID_SIDE)

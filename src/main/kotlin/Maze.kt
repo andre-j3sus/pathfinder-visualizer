@@ -8,7 +8,7 @@ import java.util.*
 object Maze {
 
     // Constants
-    private const val MAZE_GENERATION_DELAY = 5L
+    private const val MAZE_GENERATION_DELAY = 1L
     val mazeAlgorithmsNames = arrayOf("Backtracking", "Kruskal")
 
 
@@ -18,6 +18,9 @@ object Maze {
     enum class MazeGenerationAlgorithm { KRUSKAL, BACKTRACKING }
 
 
+    /**
+     * Generates a maze.
+     */
     @OptIn(DelicateCoroutinesApi::class)
     fun generateMaze() {
         GlobalScope.launch {
@@ -29,6 +32,9 @@ object Maze {
     }
 
 
+    /**
+     * Generates a maze by backtracking.
+     */
     private suspend fun backTracking() {
         Grid.makeAllWall()
 
@@ -50,29 +56,32 @@ object Maze {
                 Grid.getNodeNeighbours(neighbour).all { (it !in visited && it != currentNode) || it == currentNode }
             }
 
-            // If there are no available neighbors, backtrack.
+            // If there are no available neighbours, backtrack.
             if (neighbours.isEmpty()) {
                 currentNode = stack.pop()
                 continue
             }
 
-            // Pick random neighbor from not visited neighbors
+            // Pick random neighbour from not visited neighbours
             val randomNeighbor: Node = neighbours.random()
             randomNeighbor.type = NodeType.NEUTRAL
             GridPanel.repaint()
 
-            // Set picked neighbor as current tile for next
+            // Set picked neighbour as current node for next
             currentNode = randomNeighbor
-            // Set tile as visited
+            // Set node as visited
             visited.add(randomNeighbor)
             // Push to stack
             stack.push(randomNeighbor)
         }
     }
 
+
+    /**
+     * Generates a maze using Kruskal algorithm.
+     */
     private fun kruskal() {
-
+        //TODO("To be implemented")
     }
-
 
 }
