@@ -9,27 +9,34 @@ object Frame : JFrame() {
 
     // Constants.
     private const val FRAME_WIDTH = 1000
-    private const val FRAME_HEIGHT = 800
+    private const val FRAME_HEIGHT = 840
     private const val BORDER_SIZE = 10
-    private const val FONT_SIZE = 32
+    private const val TITLE_FONT_SIZE = 32
+    private const val SUBTITLE_FONT_SIZE = 16
 
     //Frame and main panels.
     private val frame = JFrame()
     private val menuP = JPanel()
     private val mainCommandsP = JPanel()
-    private val nodeSelectionP = JPanel()
 
     // Main Commands Panel
     private val menuTitle = JLabel("Controls")
+
+    // Path Finding Controls
+    private val pathFindingTitle = JLabel("Path Finding")
     private val algorithmsBox = JComboBox(PathFinding.searchAlgorithmsNames)
-    private val mazeGeneratorBox = JComboBox(Maze.mazeAlgorithmsNames)
-    private val generateMazeBtn = JButton("Generate Maze")
     private val findPathBtn = JButton("Find Path")
     private val clearBtn = JButton("Clear")
     private val resetBtn = JButton("Reset")
 
-    // Node Selection Panel
-    private val nodesBox = JComboBox(arrayOf("Start", "End", "Wall"))
+    // Maze Controls
+    private val mazeTitle = JLabel("Maze Generation")
+    private val generateMazeBtn = JButton("Generate Maze")
+    private val mazeGeneratorBox = JComboBox(Maze.mazeAlgorithmsNames)
+
+    // Node Selection Controls
+    private val nodesTitle = JLabel("Node Editing")
+    private val nodesBox = JComboBox(nodeTypes)
 
 
     /**
@@ -49,11 +56,14 @@ object Frame : JFrame() {
         menuP.setBounds(GridPanel.GRID_SIDE, 0, FRAME_WIDTH - GridPanel.GRID_SIDE, GridPanel.GRID_SIDE)
         menuP.layout = BoxLayout(menuP, BoxLayout.PAGE_AXIS)
         menuP.border = BorderFactory.createEmptyBorder(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE)
-        menuTitle.font = Font("ARIAL", Font.BOLD, FONT_SIZE)
+        menuTitle.font = Font("ARIAL", Font.BOLD, TITLE_FONT_SIZE)
         menuTitle.alignmentX = Component.CENTER_ALIGNMENT
         menuP.add(menuTitle, BorderLayout.CENTER)
 
         // Main Commands Panel setup
+        pathFindingTitle.font = Font("ARIAL", Font.BOLD, SUBTITLE_FONT_SIZE)
+        pathFindingTitle.alignmentX = Component.CENTER_ALIGNMENT
+        mainCommandsP.add(pathFindingTitle, BorderLayout.CENTER)
         mainCommandsP.add(algorithmsBox)
         mainCommandsP.add(findPathBtn)
         findPathBtn.addActionListener { PathFinding.findPath() }
@@ -61,24 +71,32 @@ object Frame : JFrame() {
         clearBtn.addActionListener { Grid.clear() }
         mainCommandsP.add(resetBtn)
         resetBtn.addActionListener { Grid.resetNodes() }
+
+        // Maze Controls
+        mazeTitle.font = Font("ARIAL", Font.BOLD, SUBTITLE_FONT_SIZE)
+        mazeTitle.alignmentX = Component.CENTER_ALIGNMENT
+        mazeTitle.border = BorderFactory.createEmptyBorder(BORDER_SIZE, 0, 0, 0)
+        mainCommandsP.add(mazeTitle, BorderLayout.CENTER)
         mainCommandsP.add(mazeGeneratorBox)
         mainCommandsP.add(generateMazeBtn)
         generateMazeBtn.addActionListener { Maze.generateMaze() }
-        //generateMazeBtn.addActionListener { Maze.generateMaze() }
+
         mainCommandsP.setSize(FRAME_WIDTH - GridPanel.GRID_SIDE, 100)
         menuP.add(mainCommandsP)
 
-
         // Node Selection Panel setup
-        nodeSelectionP.border = BorderFactory.createEmptyBorder(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE)
-        nodeSelectionP.add(nodesBox)
-        menuP.add(nodeSelectionP)
+        nodesTitle.font = Font("ARIAL", Font.BOLD, SUBTITLE_FONT_SIZE)
+        nodesTitle.alignmentX = Component.CENTER_ALIGNMENT
+        nodesTitle.border = BorderFactory.createEmptyBorder(BORDER_SIZE, 0, 0, 0)
+        mainCommandsP.add(nodesTitle, BorderLayout.CENTER)
+        mainCommandsP.add(nodesBox)
 
 
         frame.add(menuP)
 
         // Grid Panel setup
         GridPanel.setBounds(0, 0, GridPanel.GRID_SIDE, GridPanel.GRID_SIDE)
+        GridPanel.addMouseListener(MouseEvent)
         frame.add(GridPanel)
 
         frame.isVisible = true
@@ -116,7 +134,11 @@ object Frame : JFrame() {
      * @return node type selected by JComboBox.
      */
     fun getSelectedNodeType(): NodeType {
-        return nodesBox.selectedItem as NodeType
+        return when (nodesBox.selectedItem as String) {
+            "Start" -> NodeType.START
+            "End" -> NodeType.END
+            else -> NodeType.WALL
+        }
     }
 
 }

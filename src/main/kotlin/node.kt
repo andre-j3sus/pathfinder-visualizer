@@ -19,6 +19,7 @@ enum class State { OPEN, CLOSE, IN_QUEUE }
  * Type of the node.
  */
 enum class NodeType { START, END, WALL, NEUTRAL, PATH }
+val nodeTypes = arrayOf("Start", "End", "Obstacle")
 
 
 /**
@@ -82,6 +83,11 @@ fun Node.getColor(): Color {
         NodeType.WALL -> Color.DARK_GRAY
         NodeType.PATH -> Color.YELLOW
     }
+}
+
+
+fun Node.getTruePos(): Position{
+    return Position(pos.x * GridPanel.NODE_SIZE, pos.y * GridPanel.NODE_SIZE)
 }
 
 

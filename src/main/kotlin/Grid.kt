@@ -14,20 +14,22 @@ object Grid {
 
     /**
      * Sets the start node.
-     * @param pos position of the new start node
+     * @param node new start node
      */
-    fun setStart(pos: Position) {
-        start = getNodeAt(pos)
+    fun setStartNode(node: Node = grid[0][0]) {
+        if (start != null) start!!.type = NodeType.NEUTRAL
+        start = node
         start!!.type = NodeType.START
     }
 
 
     /**
      * Sets the end node.
-     * @param pos position of the new end node
+     * @param node new end node
      */
-    fun setEnd(pos: Position) {
-        end = getNodeAt(pos)
+    fun setEndNode(node: Node = grid[ROWS - 1][ROWS - 1]) {
+        if (end != null) end!!.type = NodeType.NEUTRAL
+        end = node
         end!!.type = NodeType.END
     }
 
@@ -65,7 +67,7 @@ object Grid {
     /**
      * Makes every node a wall.
      */
-    fun makeAllWall(){
+    fun makeAllWall() {
         for (i in grid.indices) {
             for (j in 0 until grid[0].size) {
                 grid[i][j] = grid[i][j].copy(type = NodeType.WALL)
@@ -98,6 +100,22 @@ object Grid {
     fun getNodeAt(pos: Position): Node? {
         if (!isValidPos(pos)) return null
         return grid[pos.y][pos.x]
+    }
+
+
+    fun getNodeClicked(pos: Position): Node? {
+        for (i in 0 until size) {
+            for (j in 0 until size) {
+                val node = grid[i][j]
+                val truePos = node.getTruePos()
+                if (pos.x in truePos.x..(truePos.x + GridPanel.NODE_SIZE) &&
+                    pos.y in truePos.y..(truePos.y + GridPanel.NODE_SIZE))
+                {
+                    return node
+                }
+            }
+        }
+        return null
     }
 
 

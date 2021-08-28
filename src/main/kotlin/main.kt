@@ -8,7 +8,6 @@ fun main() {
     Grid.init()
     Frame.init()
 
-    Grid.setStart(Position(10, 10))
-    Grid.setEnd(Position(15, 20))
-
+    Grid.setStartNode()
+    Grid.setEndNode()
 }

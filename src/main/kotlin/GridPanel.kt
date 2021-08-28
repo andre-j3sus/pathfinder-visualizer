@@ -15,7 +15,7 @@ object GridPanel : JPanel() {
     const val GRID_SIDE = 801
     private const val GRID_GAP = 1
     private const val FONT_SIZE = 24
-    private const val NODE_SIZE = GRID_SIDE / Grid.ROWS
+    const val NODE_SIZE = GRID_SIDE / Grid.ROWS
 
 
     override fun paintComponent(g: Graphics) {

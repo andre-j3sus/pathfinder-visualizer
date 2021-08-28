@@ -1,21 +1,33 @@
-import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
+import java.awt.event.MouseListener
 
 
-object EventHandler : MouseAdapter() {
 
-    private fun map(x: Int, in_min: Int, in_max: Int, out_min: Int, out_max: Int): Int {
-        return ((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min).toInt()
+object MouseEvent : MouseListener {
+
+    override fun mouseClicked(e: MouseEvent?) {
+        //TODO("Not yet implemented")
     }
 
-
-    override fun mousePressed(e: MouseEvent) {
-        val x: Int = map(e.x, 0, 500, 0, GridPanel.GRID_SIDE)
-        val y: Int = map(e.y, 0, 500, 0, GridPanel.GRID_SIDE)
-        val nodeClicked = Grid.getNodeAt(Position(x, y)) ?: return
-        println(nodeClicked)
-
-        nodeClicked.type = Frame.getSelectedNodeType()
+    override fun mousePressed(e: MouseEvent?) {
+        val node = Grid.getNodeClicked(Position(e!!.y, e.x)) ?: return
+        when (Frame.getSelectedNodeType()) {
+            NodeType.START -> Grid.setStartNode(node)
+            NodeType.END -> Grid.setEndNode(node)
+            NodeType.WALL ->node.type = if (node.type == NodeType.WALL) NodeType.NEUTRAL else NodeType.WALL
+        }
+        GridPanel.repaint()
     }
 
+    override fun mouseReleased(e: MouseEvent?) {
+        //TODO("Not yet implemented")
+    }
+
+    override fun mouseEntered(e: MouseEvent?) {
+        //TODO("Not yet implemented")
+    }
+
+    override fun mouseExited(e: MouseEvent?) {
+        //TODO("Not yet implemented")
+    }
 }
