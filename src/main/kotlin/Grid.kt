@@ -1,3 +1,5 @@
+import pathFinding.PathFinding
+
 /**
  * Grid with the nodes.
  */

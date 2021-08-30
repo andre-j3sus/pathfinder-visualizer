@@ -1,3 +1,5 @@
+import mazeGeneration.MazeGeneration
+import pathFinding.PathFinding
 import java.awt.*
 import javax.swing.*
 
@@ -32,7 +34,7 @@ object Frame : JFrame() {
     // Maze Controls
     private val mazeTitle = JLabel("Maze Generation")
     private val generateMazeBtn = JButton("Generate Maze")
-    private val mazeGeneratorBox = JComboBox(Maze.mazeAlgorithmsNames)
+    private val mazeGeneratorBox = JComboBox(MazeGeneration.mazeAlgorithmsNames)
 
     // Node Selection Controls
     private val nodesTitle = JLabel("Node Editing")
@@ -79,7 +81,7 @@ object Frame : JFrame() {
         mainCommandsP.add(mazeTitle, BorderLayout.CENTER)
         mainCommandsP.add(mazeGeneratorBox)
         mainCommandsP.add(generateMazeBtn)
-        generateMazeBtn.addActionListener { Maze.generateMaze() }
+        generateMazeBtn.addActionListener { MazeGeneration.generateMaze() }
 
         mainCommandsP.setSize(FRAME_WIDTH - GridPanel.GRID_SIDE, FRAME_HEIGHT)
         menuP.add(mainCommandsP)
@@ -116,15 +118,14 @@ object Frame : JFrame() {
     }
 
 
-
     /**
      * Returns the maze generation algorithm selected by the user.
      * @return maze generation algorithm selected by JComboBox.
      */
-    fun getSelectedMazeAlgo(): Maze.MazeGenerationAlgorithm {
+    fun getSelectedMazeAlgo(): MazeGeneration.MazeGenerationAlgorithm {
         return when (mazeGeneratorBox.selectedItem as String) {
-            "Kruskal" -> Maze.MazeGenerationAlgorithm.KRUSKAL
-            else -> Maze.MazeGenerationAlgorithm.BACKTRACKING
+            "Kruskal" -> MazeGeneration.MazeGenerationAlgorithm.KRUSKAL
+            else -> MazeGeneration.MazeGenerationAlgorithm.BACKTRACKING
         }
     }
 

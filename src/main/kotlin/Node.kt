@@ -19,6 +19,7 @@ enum class State { OPEN, CLOSE, IN_QUEUE }
  * Type of the node.
  */
 enum class NodeType { START, END, WALL, NEUTRAL, PATH }
+
 val nodeTypes = arrayOf("Start", "End", "Obstacle")
 
 
@@ -48,7 +49,7 @@ val notDefinedNode = Node(Position(-1, -1), State.OPEN)
  * Calculates the F from A* algorithm.
  * @return f
  */
-fun Node.getF(): Float{
+fun Node.getF(): Float {
     return g + h
 }
 
@@ -57,7 +58,7 @@ fun Node.getF(): Float{
  * Calculates the H from A* algorithm.
  * @return h
  */
-fun Node.calculateH(): Float{
+fun Node.calculateH(): Float {
     return getDistance(this, Grid.end!!)
 }
 
@@ -66,7 +67,7 @@ fun Node.calculateH(): Float{
  * Calculates G from A* algorithm.
  * @return g
  */
-fun Node.calculateNewCost(node2: Node): Float{
+fun Node.calculateNewCost(node2: Node): Float {
     return g + getDistance(this, node2)
 }
 
@@ -93,7 +94,7 @@ fun Node.getColor(): Color {
  * Returns the true position of the node in the GridPanel.
  * @return pos
  */
-fun Node.getTruePos(): Position{
+fun Node.getTruePos(): Position {
     return Position(pos.x * GridPanel.NODE_SIZE, pos.y * GridPanel.NODE_SIZE)
 }
 
@@ -102,7 +103,7 @@ fun Node.getTruePos(): Position{
  * Check if a node is open and not a wall.
  * @return true if the node is walkable
  */
-fun Node.isWalkable(): Boolean{
+fun Node.isWalkable(): Boolean {
     return state == State.OPEN && type != NodeType.WALL
 }
 
