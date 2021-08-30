@@ -17,6 +17,7 @@ object Grid {
      * @param node new start node
      */
     fun setStartNode(node: Node = grid[0][0]) {
+        if (node.type == NodeType.WALL) return
         if (start != null) start!!.type = NodeType.NEUTRAL
         start = node
         start!!.type = NodeType.START
@@ -28,6 +29,7 @@ object Grid {
      * @param node new end node
      */
     fun setEndNode(node: Node = grid[ROWS - 1][ROWS - 1]) {
+        if (node.type == NodeType.WALL) return
         if (end != null) end!!.type = NodeType.NEUTRAL
         end = node
         end!!.type = NodeType.END
