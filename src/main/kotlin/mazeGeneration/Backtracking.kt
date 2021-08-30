@@ -5,7 +5,7 @@ import kotlinx.coroutines.delay
 import java.util.*
 
 
-object BackTracking {
+object Backtracking {
 
     /**
      * Generates a maze by backtracking.

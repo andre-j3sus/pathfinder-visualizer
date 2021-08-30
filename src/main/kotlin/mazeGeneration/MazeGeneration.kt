@@ -8,13 +8,13 @@ object MazeGeneration {
 
     // Constants
     const val MAZE_GENERATION_DELAY = 1L
-    val mazeAlgorithmsNames = arrayOf("Backtracking", "Kruskal")
+    val mazeAlgorithmsNames = arrayOf("Backtracking", "Kruskal", "Prim")
 
 
     /**
      * Types of maze generation algorithms.
      */
-    enum class MazeGenerationAlgorithm { KRUSKAL, BACKTRACKING }
+    enum class MazeGenerationAlgorithm { KRUSKAL, BACKTRACKING, PRIM }
 
 
     /**
@@ -25,7 +25,8 @@ object MazeGeneration {
         GlobalScope.launch {
             when (Frame.getSelectedMazeAlgo()) {
                 MazeGenerationAlgorithm.KRUSKAL -> KruskalAlgorithm.generateMazeKruskal()
-                MazeGenerationAlgorithm.BACKTRACKING -> BackTracking.generateMazeBackTracking()
+                MazeGenerationAlgorithm.BACKTRACKING -> Backtracking.generateMazeBackTracking()
+                MazeGenerationAlgorithm.PRIM -> PrimAlgorithm.generateMazePrim()
             }
         }
     }

@@ -11,7 +11,7 @@ object PathFinding {
 
     // Constants
     const val DIAGONAL_SEARCH = false
-    const val ANIMATION_DELAY = 30L
+    const val ANIMATION_DELAY = 20L
     val searchAlgorithmsNames = arrayOf("Breadth-First Search", "Dijkstra", "A*")
 
 

@@ -125,6 +125,7 @@ object Frame : JFrame() {
     fun getSelectedMazeAlgo(): MazeGeneration.MazeGenerationAlgorithm {
         return when (mazeGeneratorBox.selectedItem as String) {
             "Kruskal" -> MazeGeneration.MazeGenerationAlgorithm.KRUSKAL
+            "Prim" -> MazeGeneration.MazeGenerationAlgorithm.PRIM
             else -> MazeGeneration.MazeGenerationAlgorithm.BACKTRACKING
         }
     }
