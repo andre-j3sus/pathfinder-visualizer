@@ -14,7 +14,7 @@ object MazeGeneration {
     /**
      * Types of maze generation algorithms.
      */
-    enum class MazeGenerationAlgorithm { KRUSKAL, BACKTRACKING, PRIM }
+    enum class MazeGenerationAlgorithm { KRUSKAL, BACKTRACKING, PRIM}
 
 
     /**
@@ -28,7 +28,10 @@ object MazeGeneration {
                 MazeGenerationAlgorithm.BACKTRACKING -> Backtracking.generateMazeBackTracking()
                 MazeGenerationAlgorithm.PRIM -> PrimAlgorithm.generateMazePrim()
             }
+            Frame.updateTotalNodesLabel()
+            Frame.updateWallsLabel()
         }
+
     }
 
 }

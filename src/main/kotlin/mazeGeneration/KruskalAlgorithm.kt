@@ -7,23 +7,31 @@ object KruskalAlgorithm {
 
     private val cells: HashMap<Node, Int> = HashMap()
     private val walls: MutableList<Node> = mutableListOf()
+    private var wallsCount = 0
 
     /**
      * Generates a maze using Kruskal algorithm.
      */
     fun generateMazeKruskal() {
+        Grid.clear()
+        cells.clear()
+        walls.clear()
+        wallsCount = 0
+
         var id = 0
         for (i in 0 until Grid.ROWS) {
             for (j in 0 until Grid.ROWS) {
                 if (i % 2 == 0 && j % 2 == 0) cells[Grid.grid[j][i]] = id++
-                else if (i == j) continue
-                else walls.add(Grid.grid[j][i])
+                else {
+                    if (i == j) continue
+                    walls.add(Grid.grid[j][i])
+                }
             }
         }
 
         // Stop when all cells have been visited
         while (walls.isNotEmpty()) {
-            val wall: Node = walls[(0 until walls.size).random()]
+            val wall: Node = walls.random()
             walls.remove(wall)
 
             // If wall's y coordinate is even, we join left and right Node
@@ -38,6 +46,9 @@ object KruskalAlgorithm {
 
             GridPanel.repaint()
         }
+
+        Grid.totalNodes = Grid.ROWS * Grid.ROWS - wallsCount
+        Grid.totalWalls = wallsCount
     }
 
 
@@ -47,14 +58,18 @@ object KruskalAlgorithm {
      * Changes sideB ID to sideA's ID
      */
     private fun putWalls(sideA: Node, sideB: Node, wall: Node) {
-        if (cells[sideA] == cells[sideB] || cells[sideA] == null) return
+        if (cells[sideA] == cells[sideB] || cells[sideA] == null || cells[sideB] == null) return
+        val bVal = cells[sideB]!!
 
         cells.forEach {
-            if (it.value == cells[sideB]) cells[it.key] = cells[sideA]!!
+            if (it.value == bVal) {
+                cells[it.key] = cells[sideA]!!
+            }
         }
 
         sideA.type = NodeType.WALL
         wall.type = NodeType.WALL
         sideB.type = NodeType.WALL
+        wallsCount += 3
     }
 }

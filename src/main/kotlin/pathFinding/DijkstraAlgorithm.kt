@@ -31,7 +31,7 @@ object DijkstraAlgorithm {
         while (pq.isNotEmpty()) {
             val current = pq.poll()
             //println(current)
-            current.state = State.CLOSE
+            current.state = State.CLOSE.also { Grid.visitedNodes++ }
 
             if (current == Grid.end) break
 

@@ -13,6 +13,7 @@ object PathFinding {
     const val DIAGONAL_SEARCH = false
     const val ANIMATION_DELAY = 20L
     val searchAlgorithmsNames = arrayOf("Breadth-First Search", "Dijkstra", "A*")
+    var elapsedTime: Double = 0.0
 
 
     /**
@@ -40,7 +41,9 @@ object PathFinding {
                 SearchAlgorithm.DIJKSTRA -> DijkstraAlgorithm.findPathDijkstra()
                 SearchAlgorithm.A_STAR -> AStarAlgorithm.findPathAStar()
             }
+            Frame.updateVisitedNodesLabel()
         }
+
     }
 
 

@@ -14,6 +14,7 @@ object PrimAlgorithm {
         var currentNode = Grid.grid[0][0]
         val visited = mutableListOf(currentNode)
         val toVisit = mutableListOf<Node>()
+        var neutralCount = 0
 
         Grid.getNodeNeighbours(currentNode).forEach { neighbour ->
             neighbour.parent = currentNode
@@ -29,6 +30,7 @@ object PrimAlgorithm {
 
             currentNode.type = NodeType.NEUTRAL
             currentNode.parent!!.type = NodeType.NEUTRAL
+            neutralCount += 2
 
 
             Grid.getNodeNeighbours(currentNode).forEach { neighbour ->
@@ -42,7 +44,8 @@ object PrimAlgorithm {
                 }
             }
         }
-
+        Grid.totalNodes = neutralCount
+        Grid.totalWalls = Grid.ROWS * Grid.ROWS - neutralCount
 
     }
 }

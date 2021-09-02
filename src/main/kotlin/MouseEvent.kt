@@ -14,7 +14,17 @@ object MouseEvent : MouseListener {
         when (Frame.getSelectedNodeType()) {
             NodeType.START -> Grid.setStartNode(node)
             NodeType.END -> Grid.setEndNode(node)
-            NodeType.WALL -> node.type = if (node.type == NodeType.WALL) NodeType.NEUTRAL else NodeType.WALL
+            NodeType.WALL -> {
+                if (node.type == NodeType.WALL) {
+                    node.type = NodeType.NEUTRAL
+                    Grid.totalWalls--
+                }
+                else {
+                    node.type = NodeType.WALL
+                    Grid.totalWalls++
+                }
+                Frame.updateWallsLabel()
+            }
             else -> {}
         }
         GridPanel.repaint()

@@ -34,7 +34,7 @@ object AStarAlgorithm {
             for (i in 0 until pq.size) {
                 val current = pq.poll()
                 //println(current)
-                current.state = State.CLOSE
+                current.state = State.CLOSE.also { Grid.visitedNodes++ }
 
                 if (current == Grid.end) {
                     pq.clear()

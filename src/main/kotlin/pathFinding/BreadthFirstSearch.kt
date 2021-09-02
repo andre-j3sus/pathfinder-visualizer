@@ -23,7 +23,7 @@ object BreadthFirstSearch {
         while (queue.isNotEmpty()) {
             for (i in 0 until queue.size) {
                 val current = queue.poll()
-                current.state = State.CLOSE
+                current.state = State.CLOSE.also { Grid.visitedNodes++ }
 
                 if (current == Grid.end!!) {
                     queue.clear()

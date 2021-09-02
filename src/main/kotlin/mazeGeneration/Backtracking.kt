@@ -19,6 +19,8 @@ object Backtracking {
         // Keeps track of visited Nodes
         val visited: MutableSet<Node> = HashSet<Node>()
 
+        var neutralCount = 0
+
         var currentNode: Node = Grid.grid[0][0]
         stack.push(currentNode)
         visited.add(currentNode)
@@ -39,7 +41,7 @@ object Backtracking {
 
             // Pick random neighbour from not visited neighbours
             val randomNeighbor: Node = neighbours.random()
-            randomNeighbor.type = NodeType.NEUTRAL
+            randomNeighbor.type = NodeType.NEUTRAL.also { neutralCount++ }
             GridPanel.repaint()
 
             // Set picked neighbour as current node for next
@@ -51,5 +53,7 @@ object Backtracking {
             // Push to stack
             stack.push(randomNeighbor)
         }
+        Grid.totalNodes = neutralCount
+        Grid.totalWalls = Grid.ROWS * Grid.ROWS - neutralCount
     }
 }

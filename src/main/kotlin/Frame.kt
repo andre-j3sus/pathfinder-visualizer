@@ -1,5 +1,5 @@
 import mazeGeneration.MazeGeneration
-import pathFinding.PathFinding
+import pathFinding.*
 import java.awt.*
 import javax.swing.*
 
@@ -13,13 +13,21 @@ object Frame : JFrame() {
     private const val FRAME_WIDTH = 1000
     private const val FRAME_HEIGHT = 840
     private const val BORDER_SIZE = 10
+    private const val TOP_BORDER = 20
+    private const val BUTTON_BORDER = 5
     private const val TITLE_FONT_SIZE = 32
     private const val SUBTITLE_FONT_SIZE = 16
+    private const val STATS_FONT_SIZE = 12
 
     //Frame and main panels.
     private val frame = JFrame()
     private val menuP = JPanel()
     private val mainCommandsP = JPanel()
+    private val pathFindingP = JPanel()
+    private val mazeControlsP = JPanel()
+    private val nodeSelectionP = JPanel()
+    private val statisticsP = JPanel()
+
 
     // Main Commands Panel
     private val menuTitle = JLabel("Controls")
@@ -40,6 +48,26 @@ object Frame : JFrame() {
     private val nodesTitle = JLabel("Node Editing")
     private val nodesBox = JComboBox(nodeTypes)
 
+    // Statistics Controls
+    private val statsTitle = JLabel("   Statistics   ")
+    private val totalNodesLabel = JLabel("Total Nodes: ${Grid.totalNodes}")
+    private val totalWallsLabel = JLabel("Total Walls: ${Grid.totalWalls}")
+    private val visitedNodesLabel = JLabel("Visited Nodes: ${Grid.visitedNodes}")
+    private val elapsedTimeLabel = JLabel("Elapsed Time: ${PathFinding.elapsedTime} Ms")
+
+    // Statistics label update functions
+    fun updateWallsLabel() {
+        totalWallsLabel.text = totalWallsLabel.text.dropLastWhile { it != ' ' } + Grid.totalWalls
+    }
+
+    fun updateTotalNodesLabel() {
+        totalNodesLabel.text = totalNodesLabel.text.dropLastWhile { it != ' ' } + Grid.totalNodes
+    }
+
+    fun updateVisitedNodesLabel() {
+        visitedNodesLabel.text = visitedNodesLabel.text.dropLastWhile { it != ' ' } + Grid.visitedNodes
+    }
+
 
     /**
      * Initializes the frame.
@@ -54,6 +82,7 @@ object Frame : JFrame() {
         frame.layout = null
         frame.setLocationRelativeTo(null)
 
+
         // Menu Panel setup
         menuP.setBounds(GridPanel.GRID_SIDE, 0, FRAME_WIDTH - GridPanel.GRID_SIDE, GridPanel.GRID_SIDE)
         menuP.layout = BoxLayout(menuP, BoxLayout.PAGE_AXIS)
@@ -62,37 +91,96 @@ object Frame : JFrame() {
         menuTitle.alignmentX = Component.CENTER_ALIGNMENT
         menuP.add(menuTitle, BorderLayout.CENTER)
 
+
         // Main Commands Panel setup
-        pathFindingTitle.font = Font("ARIAL", Font.BOLD, SUBTITLE_FONT_SIZE)
+        val subtitleFont = Font("ARIAL", Font.BOLD, SUBTITLE_FONT_SIZE)
+        val titleBorder = BorderFactory.createEmptyBorder(TOP_BORDER, 0, BORDER_SIZE, 0)
+        val statsFont = Font("ARIAL", Font.BOLD, STATS_FONT_SIZE)
+        mainCommandsP.layout = FlowLayout(FlowLayout.CENTER, 10, 10)
+        mainCommandsP.setSize(FRAME_WIDTH - GridPanel.GRID_SIDE, FRAME_HEIGHT)
+
+
+        // Path Finding Panel
+        pathFindingTitle.font = subtitleFont
         pathFindingTitle.alignmentX = Component.CENTER_ALIGNMENT
-        mainCommandsP.add(pathFindingTitle, BorderLayout.CENTER)
-        mainCommandsP.add(algorithmsBox)
-        mainCommandsP.add(findPathBtn)
+        pathFindingTitle.border = titleBorder
+        pathFindingP.add(pathFindingTitle)
+
+        algorithmsBox.alignmentX = Component.CENTER_ALIGNMENT
+        algorithmsBox.border = BorderFactory.createEmptyBorder(0, 0, BORDER_SIZE, 0)
+        pathFindingP.add(algorithmsBox)
+
         findPathBtn.addActionListener { PathFinding.findPath() }
-        mainCommandsP.add(clearBtn)
+        findPathBtn.alignmentX = Component.CENTER_ALIGNMENT
+        pathFindingP.add(findPathBtn)
+        pathFindingP.add(Box.createRigidArea(Dimension(0, BUTTON_BORDER)))
+
         clearBtn.addActionListener { Grid.clear() }
-        mainCommandsP.add(resetBtn)
+        clearBtn.alignmentX = Component.CENTER_ALIGNMENT
+        pathFindingP.add(clearBtn)
+        pathFindingP.add(Box.createRigidArea(Dimension(0, BUTTON_BORDER)))
+
         resetBtn.addActionListener { Grid.resetNodes() }
+        resetBtn.alignmentX = Component.CENTER_ALIGNMENT
+        pathFindingP.add(resetBtn)
+
+        pathFindingP.layout = BoxLayout(pathFindingP, BoxLayout.Y_AXIS)
+        mainCommandsP.add(pathFindingP)
+
 
         // Maze Controls
-        mazeTitle.font = Font("ARIAL", Font.BOLD, SUBTITLE_FONT_SIZE)
+        mazeTitle.font = subtitleFont
         mazeTitle.alignmentX = Component.CENTER_ALIGNMENT
-        mazeTitle.border = BorderFactory.createEmptyBorder(BORDER_SIZE, 0, 0, 0)
-        mainCommandsP.add(mazeTitle, BorderLayout.CENTER)
-        mainCommandsP.add(mazeGeneratorBox)
-        mainCommandsP.add(generateMazeBtn)
-        generateMazeBtn.addActionListener { MazeGeneration.generateMaze() }
+        mazeTitle.border = titleBorder
+        mazeControlsP.add(mazeTitle, BorderLayout.CENTER)
 
-        mainCommandsP.setSize(FRAME_WIDTH - GridPanel.GRID_SIDE, FRAME_HEIGHT)
-        menuP.add(mainCommandsP)
+        mazeGeneratorBox.alignmentX = Component.CENTER_ALIGNMENT
+        mazeGeneratorBox.border = BorderFactory.createEmptyBorder(0, 0, BORDER_SIZE, 0)
+        mazeControlsP.add(mazeGeneratorBox)
+        mazeControlsP.add(Box.createRigidArea(Dimension(0, BUTTON_BORDER)))
+
+        generateMazeBtn.addActionListener { MazeGeneration.generateMaze() }
+        generateMazeBtn.alignmentX = Component.CENTER_ALIGNMENT
+        mazeControlsP.add(generateMazeBtn)
+
+        mazeControlsP.layout = BoxLayout(mazeControlsP, BoxLayout.Y_AXIS)
+        mainCommandsP.add(mazeControlsP)
+
 
         // Node Selection Panel setup
-        nodesTitle.font = Font("ARIAL", Font.BOLD, SUBTITLE_FONT_SIZE)
+        nodesTitle.font = subtitleFont
         nodesTitle.alignmentX = Component.CENTER_ALIGNMENT
-        nodesTitle.border = BorderFactory.createEmptyBorder(BORDER_SIZE, 0, 0, 0)
-        mainCommandsP.add(nodesTitle, BorderLayout.CENTER)
-        mainCommandsP.add(nodesBox)
+        nodesTitle.border = titleBorder
+        nodeSelectionP.add(nodesTitle, BorderLayout.CENTER)
 
+        nodeSelectionP.add(nodesBox)
+
+        nodeSelectionP.layout = BoxLayout(nodeSelectionP, BoxLayout.Y_AXIS)
+        mainCommandsP.add(nodeSelectionP)
+
+
+        // Statistics Panel setup
+        statsTitle.font = subtitleFont
+        statsTitle.border = titleBorder
+        statisticsP.add(statsTitle, BorderLayout.CENTER)
+
+        totalNodesLabel.font = statsFont
+        statisticsP.add(totalNodesLabel)
+
+        totalWallsLabel.font = statsFont
+        statisticsP.add(totalWallsLabel)
+
+        visitedNodesLabel.font = statsFont
+        statisticsP.add(visitedNodesLabel)
+
+        elapsedTimeLabel.font = statsFont
+        statisticsP.add(elapsedTimeLabel)
+
+        statisticsP.layout = BoxLayout(statisticsP, BoxLayout.Y_AXIS)
+        mainCommandsP.add(statisticsP)
+
+
+        menuP.add(mainCommandsP)
         frame.add(menuP)
 
 
