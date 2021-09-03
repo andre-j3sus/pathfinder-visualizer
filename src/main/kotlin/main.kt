@@ -1,5 +1,3 @@
-
-
 /**
  * Main function of the Path Finder Visualizer.
  * @author André Jesus.

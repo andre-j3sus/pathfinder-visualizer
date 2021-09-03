@@ -36,36 +36,42 @@ object Frame : JFrame() {
     private val pathFindingTitle = JLabel("Path Finding")
     private val algorithmsBox = JComboBox(PathFinding.searchAlgorithmsNames)
     private val findPathBtn = JButton("Find Path")
-    private val clearBtn = JButton("Clear")
-    private val resetBtn = JButton("Reset")
+    private val clearBtn = JButton("Clear Grid")
+    private val resetBtn = JButton("Reset Search")
 
     // Maze Controls
     private val mazeTitle = JLabel("Maze Generation")
     private val generateMazeBtn = JButton("Generate Maze")
     private val mazeGeneratorBox = JComboBox(MazeGeneration.mazeAlgorithmsNames)
+    private val delayCheckbox = JCheckBox("Generate with delay")
 
     // Node Selection Controls
     private val nodesTitle = JLabel("Node Editing")
     private val nodesBox = JComboBox(nodeTypes)
 
     // Statistics Controls
-    private val statsTitle = JLabel("   Statistics   ")
+    private val statsTitle = JLabel("Statistics")
     private val totalNodesLabel = JLabel("Total Nodes: ${Grid.totalNodes}")
     private val totalWallsLabel = JLabel("Total Walls: ${Grid.totalWalls}")
     private val visitedNodesLabel = JLabel("Visited Nodes: ${Grid.visitedNodes}")
-    private val elapsedTimeLabel = JLabel("Elapsed Time: ${PathFinding.elapsedTime} Ms")
+    private val elapsedTimeLabel = JLabel("Elapsed Time (Ms): ${PathFinding.elapsedTime}")
+
 
     // Statistics label update functions
     fun updateWallsLabel() {
-        totalWallsLabel.text = totalWallsLabel.text.dropLastWhile { it != ' ' } + Grid.totalWalls
+        totalWallsLabel.text = totalWallsLabel.text.dropLastWord() + Grid.totalWalls
     }
 
     fun updateTotalNodesLabel() {
-        totalNodesLabel.text = totalNodesLabel.text.dropLastWhile { it != ' ' } + Grid.totalNodes
+        totalNodesLabel.text = totalNodesLabel.text.dropLastWord() + Grid.totalNodes
     }
 
     fun updateVisitedNodesLabel() {
-        visitedNodesLabel.text = visitedNodesLabel.text.dropLastWhile { it != ' ' } + Grid.visitedNodes
+        visitedNodesLabel.text = visitedNodesLabel.text.dropLastWord() + Grid.visitedNodes
+    }
+
+    fun updateElapsedTimeLabel() {
+        elapsedTimeLabel.text = elapsedTimeLabel.text.dropLastWord() + PathFinding.elapsedTime
     }
 
 
@@ -139,6 +145,13 @@ object Frame : JFrame() {
         mazeControlsP.add(mazeGeneratorBox)
         mazeControlsP.add(Box.createRigidArea(Dimension(0, BUTTON_BORDER)))
 
+        delayCheckbox.alignmentX = Component.CENTER_ALIGNMENT
+        delayCheckbox.addActionListener {
+            MazeGeneration.MAZE_GENERATION_DELAY = if (delayCheckbox.isSelected) 1L else 0L
+        }
+        mazeControlsP.add(delayCheckbox)
+        mazeControlsP.add(Box.createRigidArea(Dimension(0, BUTTON_BORDER)))
+
         generateMazeBtn.addActionListener { MazeGeneration.generateMaze() }
         generateMazeBtn.alignmentX = Component.CENTER_ALIGNMENT
         mazeControlsP.add(generateMazeBtn)
@@ -177,6 +190,7 @@ object Frame : JFrame() {
         statisticsP.add(elapsedTimeLabel)
 
         statisticsP.layout = BoxLayout(statisticsP, BoxLayout.Y_AXIS)
+        statisticsP.background = Color.RED
         mainCommandsP.add(statisticsP)
 
 

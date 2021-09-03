@@ -1,6 +1,7 @@
 package mazeGeneration
 
 import Node
+import kotlinx.coroutines.delay
 
 
 object KruskalAlgorithm {
@@ -12,7 +13,7 @@ object KruskalAlgorithm {
     /**
      * Generates a maze using Kruskal algorithm.
      */
-    fun generateMazeKruskal() {
+    suspend fun generateMazeKruskal() {
         Grid.clear()
         cells.clear()
         walls.clear()
@@ -31,6 +32,7 @@ object KruskalAlgorithm {
 
         // Stop when all cells have been visited
         while (walls.isNotEmpty()) {
+            delay(MazeGeneration.MAZE_GENERATION_DELAY)
             val wall: Node = walls.random()
             walls.remove(wall)
 

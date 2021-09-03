@@ -70,12 +70,10 @@ object Grid {
                 if (grid[i][j].type == NodeType.PATH) grid[i][j].type = NodeType.NEUTRAL
             }
         }
-        totalNodes = ROWS * ROWS
-        Frame.updateTotalNodesLabel()
         visitedNodes = 0
         Frame.updateVisitedNodesLabel()
-        totalWalls = 0
-        Frame.updateWallsLabel()
+        PathFinding.elapsedTime = 0L
+        Frame.updateElapsedTimeLabel()
         GridPanel.repaint()
     }
 

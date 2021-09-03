@@ -16,7 +16,6 @@ object DijkstraAlgorithm {
      * @return the shortest path between start and end nodes, or null.
      */
     suspend fun findPathDijkstra(): MutableList<Node>? {
-
         val pq = PriorityQueue(dijkstraNodeComparator())
 
         for (i in 0 until Grid.size) {

@@ -7,7 +7,7 @@ import kotlinx.coroutines.*
 object MazeGeneration {
 
     // Constants
-    const val MAZE_GENERATION_DELAY = 1L
+    var MAZE_GENERATION_DELAY = 0L
     val mazeAlgorithmsNames = arrayOf("Backtracking", "Kruskal", "Prim")
 
 

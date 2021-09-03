@@ -13,8 +13,6 @@ object BreadthFirstSearch {
      * @return the shortest path between start and end nodes, or null.
      */
     suspend fun findPathBFS(): MutableList<Node>? {
-        Grid.resetNodes()
-
         val queue: Queue<Node> = LinkedList()
 
         queue.add(Grid.start!!)

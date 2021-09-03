@@ -13,7 +13,7 @@ object PathFinding {
     const val DIAGONAL_SEARCH = false
     const val ANIMATION_DELAY = 20L
     val searchAlgorithmsNames = arrayOf("Breadth-First Search", "Dijkstra", "A*")
-    var elapsedTime: Double = 0.0
+    var elapsedTime = 0L
 
 
     /**
@@ -36,11 +36,17 @@ object PathFinding {
         }
 
         GlobalScope.launch {
+            Grid.resetNodes()
+            val initialTime = System.currentTimeMillis()
+
             when (Frame.getSelectedSearchAlgo()) {
                 SearchAlgorithm.BFS -> BreadthFirstSearch.findPathBFS()
                 SearchAlgorithm.DIJKSTRA -> DijkstraAlgorithm.findPathDijkstra()
                 SearchAlgorithm.A_STAR -> AStarAlgorithm.findPathAStar()
             }
+
+            elapsedTime = System.currentTimeMillis() - initialTime
+            Frame.updateElapsedTimeLabel()
             Frame.updateVisitedNodesLabel()
         }
 

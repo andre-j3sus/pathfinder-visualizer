@@ -1,6 +1,7 @@
 package mazeGeneration
 
 import Node
+import kotlinx.coroutines.delay
 
 
 object PrimAlgorithm {
@@ -8,7 +9,7 @@ object PrimAlgorithm {
     /**
      * Generates a maze using Prim algorithm.
      */
-    fun generateMazePrim(){
+    suspend fun generateMazePrim() {
         Grid.makeAllWall()
 
         var currentNode = Grid.grid[0][0]
@@ -21,24 +22,22 @@ object PrimAlgorithm {
             toVisit.add(neighbour)
         }
 
-        while (toVisit.isNotEmpty()){
+        while (toVisit.isNotEmpty()) {
             GridPanel.repaint()
+            delay(MazeGeneration.MAZE_GENERATION_DELAY)
 
             currentNode = toVisit.random()
             toVisit.remove(currentNode)
             visited.add(currentNode)
 
-            currentNode.type = NodeType.NEUTRAL
-            currentNode.parent!!.type = NodeType.NEUTRAL
-            neutralCount += 2
+            currentNode.type = NodeType.NEUTRAL.also { neutralCount += 1 }
 
 
             Grid.getNodeNeighbours(currentNode).forEach { neighbour ->
-                if (neighbour !in visited && neighbour !in toVisit){
+                if (neighbour !in visited && neighbour !in toVisit) {
                     neighbour.parent = currentNode
                     toVisit.add(neighbour)
-                }
-                else if(neighbour in toVisit) {
+                } else if (neighbour in toVisit) {
                     toVisit.remove(neighbour)
                     visited.add(neighbour)
                 }
