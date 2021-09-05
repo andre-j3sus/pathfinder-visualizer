@@ -190,7 +190,6 @@ object Frame : JFrame() {
         statisticsP.add(elapsedTimeLabel)
 
         statisticsP.layout = BoxLayout(statisticsP, BoxLayout.Y_AXIS)
-        statisticsP.background = Color.RED
         mainCommandsP.add(statisticsP)
 
 
