@@ -40,9 +40,9 @@ object PathFinding {
             val initialTime = System.currentTimeMillis()
 
             when (Frame.getSelectedSearchAlgo()) {
-                SearchAlgorithm.BFS -> BreadthFirstSearch.findPathBFS()
-                SearchAlgorithm.DIJKSTRA -> DijkstraAlgorithm.findPathDijkstra()
-                SearchAlgorithm.A_STAR -> AStarAlgorithm.findPathAStar()
+                SearchAlgorithm.BFS -> BreadthFirstSearch.findPathBFS(DIAGONAL_SEARCH)
+                SearchAlgorithm.DIJKSTRA -> DijkstraAlgorithm.findPathDijkstra(DIAGONAL_SEARCH)
+                SearchAlgorithm.A_STAR -> AStarAlgorithm.findPathAStar(DIAGONAL_SEARCH)
             }
 
             elapsedTime = System.currentTimeMillis() - initialTime

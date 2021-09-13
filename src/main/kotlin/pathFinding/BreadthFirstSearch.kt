@@ -12,7 +12,7 @@ object BreadthFirstSearch {
      * Breadth-First Search Algorithm.
      * @return the shortest path between start and end nodes, or null.
      */
-    suspend fun findPathBFS(): MutableList<Node>? {
+    suspend fun findPathBFS(diagonal: Boolean): MutableList<Node>? {
         val queue: Queue<Node> = LinkedList()
 
         queue.add(Grid.start!!)
@@ -28,7 +28,7 @@ object BreadthFirstSearch {
                     break
                 }
 
-                Grid.getNodeNeighbours(current).forEach { node ->
+                Grid.getNodeNeighbours(current, diagonal).forEach { node ->
                     if (node.isWalkable()) {
                         node.parent = current
                         queue.add(node)
