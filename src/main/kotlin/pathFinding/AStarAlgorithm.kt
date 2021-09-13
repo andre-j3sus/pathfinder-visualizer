@@ -15,7 +15,7 @@ object AStarAlgorithm {
     /**
      * A* algorithm.
      */
-    suspend fun findPathAStar(): MutableList<Node>? {
+    suspend fun findPathAStar(diagonal: Boolean): MutableList<Node>? {
         val pq = PriorityQueue(aStarNodeComparator())
 
         for (i in 0 until Grid.size) {
@@ -41,7 +41,7 @@ object AStarAlgorithm {
                     break
                 }
 
-                Grid.getNodeNeighbours(current).forEach { neighbour ->
+                Grid.getNodeNeighbours(current, diagonal).forEach { neighbour ->
                     if (neighbour.isWalkable()) {
                         val newG = current.calculateNewCost(neighbour)
                         if (newG < neighbour.g) {
@@ -49,6 +49,7 @@ object AStarAlgorithm {
                             neighbour.h = neighbour.calculateH()
                             neighbour.parent = current
                             pq.add(neighbour)
+                            neighbour.state = State.IN_QUEUE
                         }
                     }
                 }

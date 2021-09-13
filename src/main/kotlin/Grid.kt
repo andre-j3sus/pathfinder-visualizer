@@ -124,25 +124,6 @@ object Grid {
 
 
     /**
-     * Returns the node clicked at the position [pos].
-     * @return node
-     */
-    fun getNodeClickedInPos(pos: Position): Node? {
-        for (i in 0 until size) {
-            for (j in 0 until size) {
-                val node = grid[i][j]
-                val truePos = node.getTruePos()
-
-                if (pos.x in truePos.x..(truePos.x + GridPanel.NODE_SIZE) && pos.y in truePos.y..(truePos.y + GridPanel.NODE_SIZE)) {
-                    return node
-                }
-            }
-        }
-        return null
-    }
-
-
-    /**
      * Checks if the position [pos] is valid.
      * @return true if the position [pos] is valid.
      */
@@ -154,13 +135,13 @@ object Grid {
     /**
      * Returns a list with the [node] neighbours.
      */
-    fun getNodeNeighbours(node: Node): List<Node> {
+    fun getNodeNeighbours(node: Node, diagonal: Boolean): List<Node> {
         val neighbours = mutableListOf<Node>()
 
         for (i in -1..1) {
             for (j in -1..1) {
                 if (i == 0 && j == 0) continue
-                if (!PathFinding.DIAGONAL_SEARCH &&
+                if (diagonal &&
                     (i == -1 && j != 0 || i == 1 && j != 0 || i != 0 && j == -1 || i != 0 && j == 1)
                 ) continue
 
@@ -170,5 +151,18 @@ object Grid {
             }
         }
         return neighbours
+    }
+
+
+    /**
+     * Returns the Node in Grid in the position [relativePosition].
+     */
+    fun Node.getNeighbourFrom(relativePosition: RelativePos): Node {
+        return when (relativePosition) {
+            RelativePos.TOP -> grid[pos.y - 1][pos.x]
+            RelativePos.BOTTOM -> grid[pos.y + 1][pos.x]
+            RelativePos.LEFT -> grid[pos.y][pos.x - 1]
+            RelativePos.RIGHT -> grid[pos.y][pos.x + 1]
+        }
     }
 }

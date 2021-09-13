@@ -24,9 +24,9 @@ object MazeGeneration {
     fun generateMaze() {
         GlobalScope.launch {
             when (Frame.getSelectedMazeAlgo()) {
-                MazeGenerationAlgorithm.KRUSKAL -> KruskalAlgorithm.generateMazeKruskal()
-                MazeGenerationAlgorithm.BACKTRACKING -> Backtracking.generateMazeBackTracking()
-                MazeGenerationAlgorithm.PRIM -> PrimAlgorithm.generateMazePrim()
+                MazeGenerationAlgorithm.KRUSKAL -> KruskalAlgorithm.generateMazeKruskal(MAZE_GENERATION_DELAY)
+                MazeGenerationAlgorithm.BACKTRACKING -> Backtracking.generateMazeBackTracking(MAZE_GENERATION_DELAY)
+                MazeGenerationAlgorithm.PRIM -> PrimAlgorithm.generateMazePrim(MAZE_GENERATION_DELAY)
             }
             Frame.updateTotalNodesLabel()
             Frame.updateWallsLabel()

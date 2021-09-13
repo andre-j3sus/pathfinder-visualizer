@@ -10,7 +10,7 @@ object Backtracking {
     /**
      * Generates a maze by backtracking.
      */
-    suspend fun generateMazeBackTracking() {
+    suspend fun generateMazeBackTracking(delayTime: Long) {
         Grid.makeAllWall()
 
         // This stack backtracks the maze
@@ -26,11 +26,12 @@ object Backtracking {
         visited.add(currentNode)
 
         while (!stack.isEmpty()) {
-            delay(MazeGeneration.MAZE_GENERATION_DELAY)
+            delay(delayTime)
 
             // Get all neighbours visitable, checking if any neighbour of a neighbour was visited
-            val neighbours = Grid.getNodeNeighbours(currentNode).filter { neighbour ->
-                Grid.getNodeNeighbours(neighbour).all { (it !in visited && it != currentNode) || it == currentNode }
+            val neighbours = Grid.getNodeNeighbours(currentNode, diagonal = false).filter { neighbour ->
+                Grid.getNodeNeighbours(neighbour, diagonal = false)
+                    .all { (it !in visited && it != currentNode) || it == currentNode }
             }
 
             // If there are no available neighbours, backtrack.

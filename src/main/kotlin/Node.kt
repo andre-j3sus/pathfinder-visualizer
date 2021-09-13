@@ -109,6 +109,12 @@ fun Node.isWalkable(): Boolean {
 
 
 /**
+ * Relative Position of a Node
+ */
+enum class RelativePos { TOP, BOTTOM, LEFT, RIGHT }
+
+
+/**
  * Node Comparator for dijkstra algorithm comparing costs.
  */
 fun dijkstraNodeComparator() =

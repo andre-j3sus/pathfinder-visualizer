@@ -9,7 +9,7 @@ object PrimAlgorithm {
     /**
      * Generates a maze using Prim algorithm.
      */
-    suspend fun generateMazePrim() {
+    suspend fun generateMazePrim(delayTime: Long) {
         Grid.makeAllWall()
 
         var currentNode = Grid.grid[0][0]
@@ -17,14 +17,14 @@ object PrimAlgorithm {
         val toVisit = mutableListOf<Node>()
         var neutralCount = 0
 
-        Grid.getNodeNeighbours(currentNode).forEach { neighbour ->
+        Grid.getNodeNeighbours(currentNode, diagonal = false).forEach { neighbour ->
             neighbour.parent = currentNode
             toVisit.add(neighbour)
         }
 
         while (toVisit.isNotEmpty()) {
             GridPanel.repaint()
-            delay(MazeGeneration.MAZE_GENERATION_DELAY)
+            delay(delayTime)
 
             currentNode = toVisit.random()
             toVisit.remove(currentNode)
@@ -33,7 +33,7 @@ object PrimAlgorithm {
             currentNode.type = NodeType.NEUTRAL.also { neutralCount += 1 }
 
 
-            Grid.getNodeNeighbours(currentNode).forEach { neighbour ->
+            Grid.getNodeNeighbours(currentNode, diagonal = false).forEach { neighbour ->
                 if (neighbour !in visited && neighbour !in toVisit) {
                     neighbour.parent = currentNode
                     toVisit.add(neighbour)
