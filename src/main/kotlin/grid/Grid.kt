@@ -1,7 +1,16 @@
+package grid
+
+import Frame
+import Node
+import NodeType
+import Position
+import RelativePos
+import State
+import notDefinedNode
 import pathFinding.PathFinding
 
 /**
- * Grid with the nodes.
+ * grid.Grid with the nodes.
  */
 object Grid {
 
@@ -20,7 +29,6 @@ object Grid {
     var visitedNodes = 0
     var totalWalls = 0
 
-
     /**
      * Sets the start node.
      * @param node new start node
@@ -31,7 +39,6 @@ object Grid {
         start = node
         start!!.type = NodeType.START
     }
-
 
     /**
      * Sets the end node.
@@ -44,7 +51,6 @@ object Grid {
         end!!.type = NodeType.END
     }
 
-
     /**
      * Initializes the object.
      */
@@ -55,7 +61,6 @@ object Grid {
             }
         }
     }
-
 
     /**
      * Resets the nodes preparing them for new research. Does not affect start and end nodes.
@@ -77,7 +82,6 @@ object Grid {
         GridPanel.repaint()
     }
 
-
     /**
      * Makes every node a wall.
      */
@@ -88,7 +92,6 @@ object Grid {
             }
         }
     }
-
 
     /**
      * Clears the grid.
@@ -112,7 +115,6 @@ object Grid {
         GridPanel.repaint()
     }
 
-
     /**
      * Returns the node at the position [pos].
      * @return node
@@ -122,7 +124,6 @@ object Grid {
         return grid[pos.y][pos.x]
     }
 
-
     /**
      * Checks if the position [pos] is valid.
      * @return true if the position [pos] is valid.
@@ -130,7 +131,6 @@ object Grid {
     private fun isValidPos(pos: Position): Boolean {
         return grid.isNotEmpty() && pos.y in 0..grid.lastIndex && pos.x in 0..grid[0].lastIndex
     }
-
 
     /**
      * Returns a list with the [node] neighbours.
@@ -141,9 +141,9 @@ object Grid {
         for (i in -1..1) {
             for (j in -1..1) {
                 if (i == 0 && j == 0) continue
-                if (diagonal &&
-                    (i == -1 && j != 0 || i == 1 && j != 0 || i != 0 && j == -1 || i != 0 && j == 1)
-                ) continue
+                if (diagonal && (i == -1 && j != 0 || i == 1 && j != 0 || i != 0 && j == -1 || i != 0 && j == 1)) {
+                    continue
+                }
 
                 val neighbourPos = Position(node.pos.x + i, node.pos.y + j)
                 val neighbour = getNodeAt(neighbourPos) ?: continue
@@ -153,10 +153,10 @@ object Grid {
         return neighbours
     }
 
-
     /**
-     * Returns the Node in Grid in the position [relativePosition].
+     * Returns the Node in grid.Grid in the position [relativePosition].
      */
+    @Suppress("unused")
     fun Node.getNeighbourFrom(relativePosition: RelativePos): Node {
         return when (relativePosition) {
             RelativePos.TOP -> grid[pos.y - 1][pos.x]

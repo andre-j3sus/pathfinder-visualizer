@@ -1,8 +1,22 @@
+import grid.Grid
+import grid.GridPanel
 import mazeGeneration.MazeGeneration
-import pathFinding.*
-import java.awt.*
-import javax.swing.*
-
+import pathFinding.PathFinding
+import java.awt.BorderLayout
+import java.awt.Color
+import java.awt.Component
+import java.awt.Dimension
+import java.awt.FlowLayout
+import java.awt.Font
+import javax.swing.BorderFactory
+import javax.swing.Box
+import javax.swing.BoxLayout
+import javax.swing.JButton
+import javax.swing.JCheckBox
+import javax.swing.JComboBox
+import javax.swing.JFrame
+import javax.swing.JLabel
+import javax.swing.JPanel
 
 /**
  * Program main frame with grid and menu.
@@ -19,7 +33,7 @@ object Frame : JFrame() {
     private const val SUBTITLE_FONT_SIZE = 16
     private const val STATS_FONT_SIZE = 12
 
-    //Frame and main panels.
+    // Frame and main panels.
     private val frame = JFrame()
     private val menuP = JPanel()
     private val mainCommandsP = JPanel()
@@ -27,7 +41,6 @@ object Frame : JFrame() {
     private val mazeControlsP = JPanel()
     private val nodeSelectionP = JPanel()
     private val statisticsP = JPanel()
-
 
     // Main Commands Panel
     private val menuTitle = JLabel("Controls")
@@ -56,7 +69,6 @@ object Frame : JFrame() {
     private val visitedNodesLabel = JLabel("Visited Nodes: ${Grid.visitedNodes}")
     private val elapsedTimeLabel = JLabel("Elapsed Time (Ms): ${PathFinding.elapsedTime}")
 
-
     // Statistics label update functions
     fun updateWallsLabel() {
         totalWallsLabel.text = totalWallsLabel.text.dropLastWord() + Grid.totalWalls
@@ -74,7 +86,6 @@ object Frame : JFrame() {
         elapsedTimeLabel.text = elapsedTimeLabel.text.dropLastWord() + PathFinding.elapsedTime
     }
 
-
     /**
      * Initializes the frame.
      */
@@ -88,7 +99,6 @@ object Frame : JFrame() {
         frame.layout = null
         frame.setLocationRelativeTo(null)
 
-
         // Menu Panel setup
         menuP.setBounds(GridPanel.GRID_SIDE, 0, FRAME_WIDTH - GridPanel.GRID_SIDE, GridPanel.GRID_SIDE)
         menuP.layout = BoxLayout(menuP, BoxLayout.PAGE_AXIS)
@@ -97,14 +107,12 @@ object Frame : JFrame() {
         menuTitle.alignmentX = Component.CENTER_ALIGNMENT
         menuP.add(menuTitle, BorderLayout.CENTER)
 
-
         // Main Commands Panel setup
         val subtitleFont = Font("ARIAL", Font.BOLD, SUBTITLE_FONT_SIZE)
         val titleBorder = BorderFactory.createEmptyBorder(TOP_BORDER, 0, BORDER_SIZE, 0)
         val statsFont = Font("ARIAL", Font.BOLD, STATS_FONT_SIZE)
         mainCommandsP.layout = FlowLayout(FlowLayout.CENTER, 10, 10)
         mainCommandsP.setSize(FRAME_WIDTH - GridPanel.GRID_SIDE, FRAME_HEIGHT)
-
 
         // Path Finding Panel
         pathFindingTitle.font = subtitleFont
@@ -133,7 +141,6 @@ object Frame : JFrame() {
         pathFindingP.layout = BoxLayout(pathFindingP, BoxLayout.Y_AXIS)
         mainCommandsP.add(pathFindingP)
 
-
         // Maze Controls
         mazeTitle.font = subtitleFont
         mazeTitle.alignmentX = Component.CENTER_ALIGNMENT
@@ -159,7 +166,6 @@ object Frame : JFrame() {
         mazeControlsP.layout = BoxLayout(mazeControlsP, BoxLayout.Y_AXIS)
         mainCommandsP.add(mazeControlsP)
 
-
         // Node Selection Panel setup
         nodesTitle.font = subtitleFont
         nodesTitle.alignmentX = Component.CENTER_ALIGNMENT
@@ -170,7 +176,6 @@ object Frame : JFrame() {
 
         nodeSelectionP.layout = BoxLayout(nodeSelectionP, BoxLayout.Y_AXIS)
         mainCommandsP.add(nodeSelectionP)
-
 
         // Statistics Panel setup
         statsTitle.font = subtitleFont
@@ -192,12 +197,10 @@ object Frame : JFrame() {
         statisticsP.layout = BoxLayout(statisticsP, BoxLayout.Y_AXIS)
         mainCommandsP.add(statisticsP)
 
-
         menuP.add(mainCommandsP)
         frame.add(menuP)
 
-
-        // Grid Panel setup
+        // grid.Grid Panel setup
         GridPanel.setBounds(0, 0, GridPanel.GRID_SIDE, GridPanel.GRID_SIDE)
         GridPanel.addMouseListener(MouseEvent)
         frame.add(GridPanel)
@@ -205,43 +208,36 @@ object Frame : JFrame() {
         frame.isVisible = true
     }
 
-
     /**
      * Returns the search algorithm selected by the user.
      * @return search algorithm selected by JComboBox.
      */
-    fun getSelectedSearchAlgo(): PathFinding.SearchAlgorithm {
-        return when (algorithmsBox.selectedItem as String) {
+    fun getSelectedSearchAlgo(): PathFinding.SearchAlgorithm =
+        when (algorithmsBox.selectedItem as String) {
             "Breadth-First Search" -> PathFinding.SearchAlgorithm.BFS
             "Dijkstra" -> PathFinding.SearchAlgorithm.DIJKSTRA
             else -> PathFinding.SearchAlgorithm.A_STAR
         }
-    }
-
 
     /**
      * Returns the maze generation algorithm selected by the user.
      * @return maze generation algorithm selected by JComboBox.
      */
-    fun getSelectedMazeAlgo(): MazeGeneration.MazeGenerationAlgorithm {
-        return when (mazeGeneratorBox.selectedItem as String) {
+    fun getSelectedMazeAlgo(): MazeGeneration.MazeGenerationAlgorithm =
+        when (mazeGeneratorBox.selectedItem as String) {
             "Kruskal" -> MazeGeneration.MazeGenerationAlgorithm.KRUSKAL
             "Prim" -> MazeGeneration.MazeGenerationAlgorithm.PRIM
             else -> MazeGeneration.MazeGenerationAlgorithm.BACKTRACKING
         }
-    }
-
 
     /**
      * Returns the node selected by the user.
      * @return node type selected by JComboBox.
      */
-    fun getSelectedNodeType(): NodeType {
-        return when (nodesBox.selectedItem as String) {
+    fun getSelectedNodeType(): NodeType =
+        when (nodesBox.selectedItem as String) {
             "Start" -> NodeType.START
             "End" -> NodeType.END
             else -> NodeType.WALL
         }
-    }
-
 }

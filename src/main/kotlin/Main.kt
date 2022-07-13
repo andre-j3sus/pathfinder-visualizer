@@ -1,3 +1,5 @@
+import grid.Grid
+
 /**
  * Main function of the Path Finder Visualizer.
  * @author André Jesus.

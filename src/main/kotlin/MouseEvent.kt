@@ -1,13 +1,13 @@
+import grid.Grid
+import grid.GridPanel
 import java.awt.event.MouseEvent
 import java.awt.event.MouseListener
-
 
 object MouseEvent : MouseListener {
 
     override fun mouseClicked(e: MouseEvent?) {
-        //TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
-
 
     override fun mousePressed(e: MouseEvent?) {
         val node = getNodeClickedInPos(Position(e!!.y, e.x)) ?: return
@@ -30,7 +30,6 @@ object MouseEvent : MouseListener {
         GridPanel.repaint()
     }
 
-
     /**
      * Returns the node clicked at the position [pos].
      * @return node
@@ -49,18 +48,15 @@ object MouseEvent : MouseListener {
         return null
     }
 
-
     override fun mouseReleased(e: MouseEvent?) {
-        //TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
-
 
     override fun mouseEntered(e: MouseEvent?) {
-        //TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
 
-
     override fun mouseExited(e: MouseEvent?) {
-        //TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
 }

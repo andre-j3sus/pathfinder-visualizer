@@ -1,8 +1,9 @@
 package mazeGeneration
 
 import Frame
-import kotlinx.coroutines.*
-
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 object MazeGeneration {
 
@@ -10,12 +11,10 @@ object MazeGeneration {
     var MAZE_GENERATION_DELAY = 0L
     val mazeAlgorithmsNames = arrayOf("Backtracking", "Kruskal", "Prim")
 
-
     /**
      * Types of maze generation algorithms.
      */
-    enum class MazeGenerationAlgorithm { KRUSKAL, BACKTRACKING, PRIM}
-
+    enum class MazeGenerationAlgorithm { KRUSKAL, BACKTRACKING, PRIM }
 
     /**
      * Generates a maze.
@@ -24,14 +23,12 @@ object MazeGeneration {
     fun generateMaze() {
         GlobalScope.launch {
             when (Frame.getSelectedMazeAlgo()) {
-                MazeGenerationAlgorithm.KRUSKAL -> KruskalAlgorithm.generateMazeKruskal(MAZE_GENERATION_DELAY)
-                MazeGenerationAlgorithm.BACKTRACKING -> Backtracking.generateMazeBackTracking(MAZE_GENERATION_DELAY)
-                MazeGenerationAlgorithm.PRIM -> PrimAlgorithm.generateMazePrim(MAZE_GENERATION_DELAY)
+                MazeGenerationAlgorithm.KRUSKAL -> generateMazeKruskal(MAZE_GENERATION_DELAY)
+                MazeGenerationAlgorithm.BACKTRACKING -> generateMazeBackTracking(MAZE_GENERATION_DELAY)
+                MazeGenerationAlgorithm.PRIM -> generateMazePrim(MAZE_GENERATION_DELAY)
             }
             Frame.updateTotalNodesLabel()
             Frame.updateWallsLabel()
         }
-
     }
-
 }

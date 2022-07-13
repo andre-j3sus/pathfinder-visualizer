@@ -1,9 +1,15 @@
-import java.awt.*
+package grid
+
+import NodeType
+import Position
+import java.awt.Color
+import java.awt.Font
+import java.awt.Graphics
+import java.awt.Graphics2D
 import javax.swing.JPanel
 
-
 /**
- * Grid Panel at Frame.
+ * grid.Grid Panel at Frame.
  */
 object GridPanel : JPanel() {
     private lateinit var g2D: Graphics2D
@@ -13,7 +19,6 @@ object GridPanel : JPanel() {
     private const val GRID_GAP = 1
     private const val FONT_SIZE = 24
     const val NODE_SIZE = GRID_SIDE / Grid.ROWS
-
 
     override fun paintComponent(g: Graphics) {
         g2D = g as Graphics2D
@@ -29,7 +34,6 @@ object GridPanel : JPanel() {
 
         paintGrid()
     }
-
 
     /**
      * Paints the grid.
@@ -49,12 +53,12 @@ object GridPanel : JPanel() {
                     val str = if (node.type == NodeType.START) "S" else "E"
                     g2D.color = Color.BLACK
                     g2D.drawString(
-                        str, i * NODE_SIZE + (NODE_SIZE - g2D.fontMetrics.stringWidth(str)) / 2,
+                        str,
+                        i * NODE_SIZE + (NODE_SIZE - g2D.fontMetrics.stringWidth(str)) / 2,
                         j * NODE_SIZE + 1 + g2D.fontMetrics.ascent + (NODE_SIZE - g2D.fontMetrics.height) / 2
                     )
                 }
             }
         }
     }
-
 }
